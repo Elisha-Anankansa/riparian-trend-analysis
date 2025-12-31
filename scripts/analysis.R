@@ -18,7 +18,31 @@ for (pkg in required_pkgs) {
 # ----------------------------
 # 2. Load Dataset
 # ----------------------------
-data_path <- ("C:/Users/user/Downloads/riparian-trend-analysis/data/riparian_data.csv")
+# ----------------------------
+# 2. Download & Load Dataset from Zenodo
+# ----------------------------
+
+data_dir <- "data"
+data_file <- "riparian_data.csv"
+data_path <- file.path(data_dir, data_file)
+
+# Zenodo direct download link (update filename if different)
+zenodo_url <- "https://zenodo.org/record/18103076/files/riparian_data.csv"
+
+# Create data directory if it doesn't exist
+if (!dir.exists(data_dir)) {
+  dir.create(data_dir, recursive = TRUE)
+}
+
+# Download dataset only if not already present
+if (!file.exists(data_path)) {
+  message("Downloading data from Zenodo...")
+  download.file(zenodo_url, destfile = data_path, mode = "wb")
+} else {
+  message("Using local copy of dataset.")
+}
+
+# Load dataset
 df <- read.csv(data_path)
 
 # ----------------------------
